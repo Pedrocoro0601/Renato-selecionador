@@ -61,8 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Universal: Flip on Click (Desktop & Mobile)
-    // Note: This remains active as requested (option to see verso), 
-    // even though map/carousel clicks are disabled.
     cardScene.addEventListener('click', (e) => {
         // Prevent default only if necessary, but allow links inside card back to work
         if(e.target.closest('a')) return;
