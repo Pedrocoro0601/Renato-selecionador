@@ -12,6 +12,7 @@ body {
 /* --- Fluid 3D Card Styling --- */
 .card-scene {
     perspective: 1500px;
+    touch-action: manipulation; /* Remove delay do tap em mobile */
 }
 
 /* 3D Entrance Animation */
@@ -39,8 +40,11 @@ body {
     height: 100%;
     position: relative;
     transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); 
+    /* Alterado para animar apenas o transform para performance */
+    transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1); 
     transform-origin: center center;
+    /* Dica para o navegador usar a GPU */
+    will-change: transform; 
 }
 
 .is-interacting {
@@ -78,20 +82,18 @@ body {
 .marquee-wrapper {
     width: 100%;
     overflow: hidden;
-    /* Masking for softer edges */
     mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
 
 .marquee-content {
     display: flex;
-    width: max-content; /* Ensure container fits all items */
+    width: max-content; 
 }
 
 /* Generic Left Scroll */
 .marquee-content {
     animation: scroll-left 20s linear infinite;
-    /* FORCE RUNNING - Never pause */
     animation-play-state: running !important;
 }
 
@@ -106,12 +108,10 @@ body {
     animation-play-state: running !important;
 }
 
-/* Ensure no pause on hover */
 .marquee-content:hover {
     animation-play-state: running !important;
 }
 
-/* Keyframes */
 @keyframes scroll-left {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); } 
@@ -132,7 +132,6 @@ body {
     object-fit: cover;
     transition: all 0.3s;
     user-select: none;
-    /* Explicitly prevent events */
     pointer-events: none; 
 }
 @media (min-width: 768px) {
@@ -147,7 +146,6 @@ body {
     width: 20px;
     height: 20px;
     transform: translate(-50%, -50%);
-    /* Disable Click interactions */
     pointer-events: none; 
     z-index: 10;
 }
@@ -223,7 +221,6 @@ body {
     animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
 }
 
-/* Scale effect on active */
 .map-point.is-active .point-dot {
     background-color: #fff;
     transform: translate(-50%, -50%) scale(1.8);

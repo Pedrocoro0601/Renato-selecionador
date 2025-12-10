@@ -6,11 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const shine = cardScene.querySelector('.shine');
     const shadow = cardScene.querySelector('.card-shadow');
     
-    // Check if device supports hover (desktop) vs touch (mobile)
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    // Better detection: devices that primarily use a fine pointer (mouse)
+    const canHover = window.matchMedia('(hover: hover)').matches;
 
-    if (!isTouchDevice) {
-        // Desktop: Tilt Effect
+    // --- PC (Mouse) Logic ---
+    if (canHover) {
         const maxTilt = 15; 
 
         const handleMove = (x, y, rect) => {
@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const baseRotateY = isFlipped ? 180 : 0;
             const tiltY = isFlipped ? -rotateY : rotateY; 
 
+            // Using inline styles for smooth tilt following mouse
             cardObject.style.transform = `perspective(1000px) rotateX(${rotateX * maxTilt}deg) rotateY(${baseRotateY + (tiltY * maxTilt)}deg) scale3d(1.05, 1.05, 1.05)`;
             
             const shineOpacity = Math.min(Math.abs(rotateX) + Math.abs(rotateY), 0.5);
@@ -38,11 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         cardScene.addEventListener('mousemove', (e) => {
+            // Only tilt if not mid-click on non-touch (rare edge case)
             cardObject.classList.add('is-interacting');
             const rect = cardScene.getBoundingClientRect();
-            // Prevent jerky movement on edges
-            if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) return;
-
+            
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             
@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cardObject.classList.remove('is-interacting'); 
             const isFlipped = cardObject.classList.contains('is-flipped');
             
+            // Return to base state
             cardObject.style.transform = `perspective(1000px) rotateX(0deg) rotateY(${isFlipped ? 180 : 0}deg) scale3d(1, 1, 1)`;
             shine.style.opacity = 0;
             shadow.style.opacity = 0;
@@ -60,39 +61,45 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Universal: Flip on Click (Desktop & Mobile)
+    // --- Universal Click/Tap Logic (Fix for Mobile Freeze) ---
     cardScene.addEventListener('click', (e) => {
-        // Prevent default only if necessary, but allow links inside card back to work
+        // Prevent if clicking a link/button inside
         if(e.target.closest('a')) return;
 
+        // CRITICAL FIX FOR MOBILE LAG:
+        // 1. Stop any "interacting" transition speed adjustments
         cardObject.classList.remove('is-interacting'); 
+
+        // 2. Clear inline styles immediately. 
+        // On mobile, the "tilt" scripts might not run, but clearing this ensures 
+        // the CSS class rule is the *only* thing controlling the transform.
+        // This stops the JS coordinates from fighting the CSS class.
+        cardObject.style.transform = ''; 
+        
+        // 3. Reset effects
+        shine.style.opacity = '0';
+        shadow.style.opacity = '0';
+        shadow.style.transform = '';
+
+        // 4. Force a reflow (optional, usually not needed if simply toggling class, but helps reset browser paint)
+        void cardObject.offsetWidth; 
+
+        // 5. Toggle class
         cardObject.classList.toggle('is-flipped');
-        
-        const isFlipped = cardObject.classList.contains('is-flipped');
-        
-        // Simple rotation reset for mobile to ensure clean state
-        cardObject.style.transform = `perspective(1000px) rotateY(${isFlipped ? 180 : 0}deg)`;
-        
-        // Reset effects if active
-        shine.style.opacity = 0;
-        shadow.style.opacity = 0;
     });
 
 
-    // --- 2. Automated Map Tooltips (Faster & Random & No Stop) ---
+    // --- 2. Automated Map Tooltips ---
     const mapPoints = document.querySelectorAll('.map-point');
     
     if (mapPoints.length > 0) {
         let activePointIndex = -1;
         
-        // Function to shuffle through points
         const cycleMapPoints = () => {
-            // Remove active class from current
             if (activePointIndex >= 0) {
                 mapPoints[activePointIndex].classList.remove('is-active');
             }
 
-            // Ensure random next point, distinct from current
             let nextIndex;
             do {
                 nextIndex = Math.floor(Math.random() * mapPoints.length);
@@ -102,9 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
             mapPoints[activePointIndex].classList.add('is-active');
         };
 
-        // Start Loop - Faster (800ms) and no clearInterval logic so it never stops
-        setInterval(cycleMapPoints, 800); 
-        cycleMapPoints(); // Immediate start
+        setInterval(cycleMapPoints, 1500); // Slightly slower for better readability
+        cycleMapPoints(); 
     }
 
 
@@ -123,7 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Animate elements on scroll
     const revealElements = document.querySelectorAll('.reveal-up');
     revealElements.forEach(el => {
         gsap.fromTo(el, 
@@ -141,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     });
 
-    // Map Points Stagger Appearance
     gsap.from('.map-point', {
         scrollTrigger: {
             trigger: '#international',
