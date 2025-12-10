@@ -150,7 +150,7 @@ body {
     z-index: 10;
 }
 
-/* Tooltip */
+/* Tooltip Default (Top) */
 .map-point::after {
     content: attr(data-country);
     position: absolute;
@@ -173,7 +173,7 @@ body {
     z-index: 20;
 }
 
-/* Tooltip Arrow */
+/* Tooltip Arrow Default (Top) */
 .map-point::before {
     content: '';
     position: absolute;
@@ -188,6 +188,26 @@ body {
     transition: all 0.2s ease;
     z-index: 19;
 }
+
+/* --- Bottom Tooltip Variant --- */
+.map-point.tooltip-bottom::after {
+    bottom: auto;
+    top: 150%;
+    transform: translateX(-50%) translateY(-10px);
+}
+
+.map-point.tooltip-bottom::before {
+    bottom: auto;
+    top: 120%;
+    border-color: transparent transparent #c5a059 transparent;
+    transform: translateX(-50%) translateY(-10px);
+}
+
+.map-point.tooltip-bottom.is-active::after,
+.map-point.tooltip-bottom.is-active::before {
+    transform: translateX(-50%) translateY(0);
+}
+/* ----------------------------- */
 
 /* Active State controlled by JS */
 .map-point.is-active::after,
