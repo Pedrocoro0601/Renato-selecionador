@@ -12,15 +12,32 @@ body {
 /* --- Fluid 3D Card Styling --- */
 .card-scene {
     perspective: 1500px;
-    animation: float 6s ease-in-out infinite;
 }
 
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0px); }
+/* 3D Entrance Animation */
+@keyframes card-enter-3d {
+    0% {
+        opacity: 0;
+        transform: translateY(100vh) rotateX(45deg) scale(0.5);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-20px) rotateX(-5deg) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0) scale(1);
+    }
 }
 
+.card-entrance {
+    animation: card-enter-3d 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Float animation runs after entrance (handled implicitly or via chained animation, 
+   but simplistic float here usually conflicts with transforms. 
+   Better to float the content or use wrapper if needed, 
+   but keeping simple for stability of the 3D effect requested) */
 .card-object {
     width: 100%;
     height: 100%;
@@ -78,23 +95,27 @@ body {
 /* Generic Left Scroll */
 .marquee-content {
     animation: scroll-left 20s linear infinite;
+    /* FORCE RUNNING - Never pause */
+    animation-play-state: running !important;
 }
 
 /* For Gallery - Left and Right variants */
 .marquee-left {
     animation: scroll-left 15s linear infinite;
+    animation-play-state: running !important;
 }
 
 .marquee-right {
     animation: scroll-right 15s linear infinite;
+    animation-play-state: running !important;
 }
 
-/* Pause on hover */
+/* Ensure no pause on hover */
 .marquee-content:hover {
-    animation-play-state: paused;
+    animation-play-state: running !important;
 }
 
-/* Keyframes - Move by -50% because we duplicated content exactly once */
+/* Keyframes */
 @keyframes scroll-left {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); } 
@@ -115,15 +136,13 @@ body {
     object-fit: cover;
     transition: all 0.3s;
     user-select: none;
+    /* Explicitly prevent events */
+    pointer-events: none; 
 }
 @media (min-width: 768px) {
     .gallery-img {
         height: 16rem; 
     }
-}
-.gallery-img:hover {
-    filter: grayscale(0%);
-    transform: scale(1.05);
 }
 
 /* --- Map Interactivity --- */
@@ -132,7 +151,8 @@ body {
     width: 20px;
     height: 20px;
     transform: translate(-50%, -50%);
-    cursor: pointer;
+    /* Disable Click interactions */
+    pointer-events: none; 
     z-index: 10;
 }
 
@@ -153,10 +173,10 @@ body {
     white-space: nowrap;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
-    pointer-events: none;
+    transition: all 0.2s ease;
     font-family: 'Lato', sans-serif;
     box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    z-index: 20;
 }
 
 /* Tooltip Arrow */
@@ -171,12 +191,11 @@ body {
     border-color: #c5a059 transparent transparent transparent;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    z-index: 19;
 }
 
-/* Active State */
-.map-point:hover::after,
-.map-point:hover::before,
+/* Active State controlled by JS */
 .map-point.is-active::after,
 .map-point.is-active::before {
     opacity: 1;
@@ -208,10 +227,11 @@ body {
     animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
 }
 
-.map-point:hover .point-dot,
+/* Scale effect on active */
 .map-point.is-active .point-dot {
     background-color: #fff;
-    transform: translate(-50%, -50%) scale(1.5);
+    transform: translate(-50%, -50%) scale(1.8);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
 }
 
 @keyframes pulse-ring {

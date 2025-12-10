@@ -70,8 +70,8 @@
             <h1 class="text-2xl md:text-5xl font-serif text-white opacity-90 tracking-wide leading-tight">Excelência Genética</h1>
         </div>
 
-        <!-- 3D Card Container -->
-        <div class="card-scene w-full max-w-[320px] sm:max-w-[400px] md:max-w-[540px] aspect-[1.75/1] relative z-20 cursor-pointer mx-auto" id="business-card">
+        <!-- 3D Card Container (Added card-entrance animation class) -->
+        <div class="card-scene w-full max-w-[320px] sm:max-w-[400px] md:max-w-[540px] aspect-[1.75/1] relative z-20 cursor-pointer mx-auto card-entrance" id="business-card">
             
             <!-- Dynamic Soft Shadow/Glow behind card -->
             <div class="card-shadow absolute inset-4 bg-brand-gold/20 blur-[30px] rounded-full opacity-0 transition-opacity duration-500"></div>
@@ -99,8 +99,8 @@
                         <p class="text-[10px] md:text-sm text-gray-400 uppercase tracking-[0.3em] font-light pl-1">Genetic Specialist</p>
                     </div>
                     
-                    <!-- New Minimalist Click Hint -->
-                    <div class="absolute bottom-4 right-4 md:bottom-6 md:right-6 z-20 flex items-center gap-2 opacity-50 animate-pulse">
+                    <!-- Front Click Hint -->
+                    <div class="absolute bottom-4 right-4 md:bottom-6 md:right-6 z-20 flex items-center gap-2 opacity-60 animate-pulse">
                         <span class="text-[8px] md:text-[10px] uppercase tracking-widest text-brand-gold">Ver verso</span>
                         <i class="fa-solid fa-rotate text-brand-gold text-xs"></i>
                     </div>
@@ -123,7 +123,7 @@
                             </div>
 
                             <div class="flex flex-col gap-3 items-center pt-2 translate-z-40">
-                                <a href="#" class="flex items-center gap-3 text-brand-dark hover:text-brand-gold transition-colors p-2">
+                                <a href="#" class="flex items-center gap-3 text-brand-dark hover:text-brand-gold transition-colors p-2 pointer-events-auto">
                                     <i class="fa-brands fa-whatsapp text-lg md:text-xl"></i>
                                     <span class="text-xs md:text-sm font-bold tracking-wider">+55 16 99999-9999</span>
                                 </a>
@@ -134,16 +134,22 @@
                             </div>
                         </div>
                      </div>
+
+                     <!-- Back Click Hint (Requested) -->
+                     <div class="absolute bottom-4 right-4 md:bottom-6 md:right-6 z-20 flex items-center gap-2 opacity-50 animate-pulse text-brand-dark">
+                        <span class="text-[8px] md:text-[10px] uppercase tracking-widest">Ver frente</span>
+                        <i class="fa-solid fa-rotate text-xs"></i>
+                    </div>
                 </div>
 
             </div>
         </div>
 
-        <!-- Scroll Arrow -->
-        <div class="absolute bottom-6 md:bottom-8 left-0 w-full flex justify-center items-center animate-bounce text-brand-gold/30 z-30 pointer-events-none">
+        <!-- Scroll Arrow (Moved Up & Increased Visibility) -->
+        <div class="absolute bottom-20 md:bottom-24 left-0 w-full flex justify-center items-center animate-bounce text-brand-gold z-30 pointer-events-none drop-shadow-md">
             <div class="flex flex-col items-center">
-                <span class="text-[8px] md:text-[10px] uppercase tracking-widest block mb-2 opacity-50">Role para ver</span>
-                <i class="fa-solid fa-chevron-down text-sm"></i>
+                <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest block mb-2 opacity-80">Role para ver</span>
+                <i class="fa-solid fa-chevron-down text-xl"></i>
             </div>
         </div>
     </section>
@@ -179,7 +185,7 @@
         </div>
     </section>
 
-    <!-- Infinite Gallery Marquee Section (Fixed Infinite Loop) -->
+    <!-- Infinite Gallery Marquee Section (Fixed Infinite Loop, No Click on Images) -->
     <section class="py-12 md:py-16 bg-brand-panel border-b border-white/5 relative overflow-hidden">
         <div class="absolute inset-0 bg-brand-dark/50 z-10 pointer-events-none shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]"></div>
         
@@ -192,22 +198,22 @@
         <div class="marquee-wrapper mb-6 relative z-0 opacity-90">
             <div class="marquee-content marquee-left flex gap-4 will-change-transform">
                 <!-- Original Set -->
-                <div class="flex gap-4 shrink-0">
-                    <img src="imagens (1).jpeg" class="gallery-img" alt="Gallery 1" loading="lazy">
-                    <img src="imagens (2).jpeg" class="gallery-img" alt="Gallery 2" loading="lazy">
-                    <img src="imagens (3).jpeg" class="gallery-img" alt="Gallery 3" loading="lazy">
-                    <img src="imagens (4).jpeg" class="gallery-img" alt="Gallery 4" loading="lazy">
-                    <img src="imagens (5).jpeg" class="gallery-img" alt="Gallery 5" loading="lazy">
-                    <img src="imagens (6).jpeg" class="gallery-img" alt="Gallery 6" loading="lazy">
+                <div class="flex gap-4 shrink-0 pointer-events-none">
+                    <img src="https://picsum.photos/300/200?random=1" class="gallery-img" alt="Gallery 1" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=2" class="gallery-img" alt="Gallery 2" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=3" class="gallery-img" alt="Gallery 3" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=4" class="gallery-img" alt="Gallery 4" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=5" class="gallery-img" alt="Gallery 5" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=6" class="gallery-img" alt="Gallery 6" loading="lazy">
                 </div>
                 <!-- Duplicate Set -->
-                <div class="flex gap-4 shrink-0">
-                    <img src="imagens (1).jpeg" class="gallery-img" alt="Gallery 1" loading="lazy">
-                    <img src="imagens (2).jpeg" class="gallery-img" alt="Gallery 2" loading="lazy">
-                    <img src="imagens (3).jpeg" class="gallery-img" alt="Gallery 3" loading="lazy">
-                    <img src="imagens (4).jpeg" class="gallery-img" alt="Gallery 4" loading="lazy">
-                    <img src="imagens (5).jpeg" class="gallery-img" alt="Gallery 5" loading="lazy">
-                    <img src="imagens (6).jpeg" class="gallery-img" alt="Gallery 6" loading="lazy">
+                <div class="flex gap-4 shrink-0 pointer-events-none">
+                    <img src="https://picsum.photos/300/200?random=1" class="gallery-img" alt="Gallery 1" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=2" class="gallery-img" alt="Gallery 2" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=3" class="gallery-img" alt="Gallery 3" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=4" class="gallery-img" alt="Gallery 4" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=5" class="gallery-img" alt="Gallery 5" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=6" class="gallery-img" alt="Gallery 6" loading="lazy">
                 </div>
             </div>
         </div>
@@ -216,22 +222,22 @@
         <div class="marquee-wrapper relative z-0 opacity-90">
             <div class="marquee-content marquee-right flex gap-4 will-change-transform">
                 <!-- Original Set -->
-                <div class="flex gap-4 shrink-0">
-                    <img src="imagens (7).jpeg" class="gallery-img" alt="Gallery 7" loading="lazy">
-                    <img src="imagens (8).jpeg" class="gallery-img" alt="Gallery 8" loading="lazy">
-                    <img src="imagens (9).jpeg" class="gallery-img" alt="Gallery 9" loading="lazy">
-                    <img src="imagens (10).jpeg" class="gallery-img" alt="Gallery 10" loading="lazy">
-                    <img src="imagens (11).jpeg" class="gallery-img" alt="Gallery 11" loading="lazy">
-                    <img src="imagens (12).jpeg" class="gallery-img" alt="Gallery 12" loading="lazy">
+                <div class="flex gap-4 shrink-0 pointer-events-none">
+                    <img src="https://picsum.photos/300/200?random=7" class="gallery-img" alt="Gallery 7" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=8" class="gallery-img" alt="Gallery 8" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=9" class="gallery-img" alt="Gallery 9" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=10" class="gallery-img" alt="Gallery 10" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=11" class="gallery-img" alt="Gallery 11" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=12" class="gallery-img" alt="Gallery 12" loading="lazy">
                 </div>
                 <!-- Duplicate Set -->
-                <div class="flex gap-4 shrink-0">
-                    <img src="imagens (7).jpeg" class="gallery-img" alt="Gallery 7" loading="lazy">
-                    <img src="imagens (8).jpeg" class="gallery-img" alt="Gallery 8" loading="lazy">
-                    <img src="imagens (9).jpeg" class="gallery-img" alt="Gallery 9" loading="lazy">
-                    <img src="imagens (10).jpeg" class="gallery-img" alt="Gallery 10" loading="lazy">
-                    <img src="imagens (11).jpeg" class="gallery-img" alt="Gallery 11" loading="lazy">
-                    <img src="imagens (12).jpeg" class="gallery-img" alt="Gallery 12" loading="lazy">
+                <div class="flex gap-4 shrink-0 pointer-events-none">
+                    <img src="https://picsum.photos/300/200?random=7" class="gallery-img" alt="Gallery 7" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=8" class="gallery-img" alt="Gallery 8" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=9" class="gallery-img" alt="Gallery 9" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=10" class="gallery-img" alt="Gallery 10" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=11" class="gallery-img" alt="Gallery 11" loading="lazy">
+                    <img src="https://picsum.photos/300/200?random=12" class="gallery-img" alt="Gallery 12" loading="lazy">
                 </div>
             </div>
         </div>
@@ -250,11 +256,11 @@
                 <div class="relative w-full aspect-[1.8/1] bg-[#161920] rounded-xl md:rounded-2xl border border-white/5 shadow-2xl overflow-hidden group">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/2560px-World_map_-_low_resolution.svg.png" 
                          alt="Mapa Mundi" 
-                         class="w-full h-full object-cover opacity-20 filter invert grayscale contrast-125 mix-blend-screen hover:opacity-30 transition-opacity duration-700">
+                         class="w-full h-full object-cover opacity-20 filter invert grayscale contrast-125 mix-blend-screen hover:opacity-30 transition-opacity duration-700 pointer-events-none">
                     
-                    <div class="absolute inset-0 bg-gradient-to-b from-[#0d0f12]/50 via-transparent to-[#0d0f12]/50"></div>
+                    <div class="absolute inset-0 bg-gradient-to-b from-[#0d0f12]/50 via-transparent to-[#0d0f12]/50 pointer-events-none"></div>
 
-                    <!-- Hotspots (Responsive Positioning) -->
+                    <!-- Hotspots (Responsive Positioning) - Disabled interactions via CSS -->
                     <!-- Used percentages for responsiveness -->
                     <div class="map-point" style="top: 65%; left: 32%;" data-country="Brasil">
                         <div class="point-dot bg-brand-gold"></div>

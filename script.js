@@ -61,6 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Universal: Flip on Click (Desktop & Mobile)
+    // Note: This remains active as requested (option to see verso), 
+    // even though map/carousel clicks are disabled.
     cardScene.addEventListener('click', (e) => {
         // Prevent default only if necessary, but allow links inside card back to work
         if(e.target.closest('a')) return;
@@ -79,19 +81,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // --- 2. Automated Map Tooltips (Smoother) ---
+    // --- 2. Automated Map Tooltips (Faster & Random & No Stop) ---
     const mapPoints = document.querySelectorAll('.map-point');
     
     if (mapPoints.length > 0) {
         let activePointIndex = -1;
-        let autoLoopInterval;
-
+        
+        // Function to shuffle through points
         const cycleMapPoints = () => {
+            // Remove active class from current
             if (activePointIndex >= 0) {
                 mapPoints[activePointIndex].classList.remove('is-active');
             }
 
-            // Ensure random next point
+            // Ensure random next point, distinct from current
             let nextIndex;
             do {
                 nextIndex = Math.floor(Math.random() * mapPoints.length);
@@ -101,21 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
             mapPoints[activePointIndex].classList.add('is-active');
         };
 
-        // Start Loop
-        autoLoopInterval = setInterval(cycleMapPoints, 2000); 
+        // Start Loop - Faster (800ms) and no clearInterval logic so it never stops
+        setInterval(cycleMapPoints, 800); 
         cycleMapPoints(); // Immediate start
-
-        // Pause on interaction
-        const mapContainer = document.querySelector('#international');
-        if(mapContainer) {
-            mapContainer.addEventListener('mouseenter', () => clearInterval(autoLoopInterval));
-            mapContainer.addEventListener('touchstart', () => clearInterval(autoLoopInterval), {passive: true});
-            
-            mapContainer.addEventListener('mouseleave', () => {
-                clearInterval(autoLoopInterval);
-                autoLoopInterval = setInterval(cycleMapPoints, 2000);
-            });
-        }
     }
 
 
@@ -152,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     });
 
-    // Map Points Stagger
+    // Map Points Stagger Appearance
     gsap.from('.map-point', {
         scrollTrigger: {
             trigger: '#international',
