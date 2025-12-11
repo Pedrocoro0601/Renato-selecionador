@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. Enhanced 3D Card Logic ---
+    // --- 1. Enhanced 3D Card Logic (Business Card) ---
     const cardScene = document.getElementById('business-card');
     const cardObject = cardScene.querySelector('.card-object');
     const shine = cardScene.querySelector('.shine');
@@ -88,28 +88,39 @@ document.addEventListener('DOMContentLoaded', () => {
         cardObject.classList.toggle('is-flipped');
     });
 
-
     // --- 2. Automated Map Tooltips ---
+    // Select all map points including the new Brazil ones
     const mapPoints = document.querySelectorAll('.map-point');
     
     if (mapPoints.length > 0) {
         let activePointIndex = -1;
         
         const cycleMapPoints = () => {
-            if (activePointIndex >= 0) {
+            if (activePointIndex >= 0 && mapPoints[activePointIndex]) {
                 mapPoints[activePointIndex].classList.remove('is-active');
             }
 
+            // Just check valid points exist
+            if(mapPoints.length === 0) return;
+
+            // Simple randomization logic
             let nextIndex;
+            // Limit tries to avoid infinite loop if length is small
+            let tries = 0;
             do {
                 nextIndex = Math.floor(Math.random() * mapPoints.length);
-            } while (nextIndex === activePointIndex && mapPoints.length > 1);
+                tries++;
+            } while (nextIndex === activePointIndex && mapPoints.length > 1 && tries < 10);
 
             activePointIndex = nextIndex;
-            mapPoints[activePointIndex].classList.add('is-active');
+            
+            // Safety check
+            if(mapPoints[activePointIndex]) {
+                mapPoints[activePointIndex].classList.add('is-active');
+            }
         };
 
-        setInterval(cycleMapPoints, 1500); // Slightly slower for better readability
+        setInterval(cycleMapPoints, 2000); // 2 seconds per blip
         cycleMapPoints(); 
     }
 
@@ -145,17 +156,44 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         );
     });
-
+    
+    // Animate map points when section comes into view
     gsap.from('.map-point', {
         scrollTrigger: {
-            trigger: '#international',
-            start: "top 75%"
+            trigger: '.map-point', // Triggers when the first map point is somewhat visible
+            start: "top 90%"
         },
         scale: 0,
         opacity: 0,
         duration: 0.6,
-        stagger: 0.1,
+        stagger: 0.05, // Faster stagger for many points
         ease: "back.out(1.7)"
     });
+
+    // --- NEW: Mask Reveal for Large Image (Markers logic removed) ---
+    // Using a Timeline to sequence Image Reveal
+    const revealImage = document.querySelector('.mask-reveal-image');
+    
+    if (revealImage) {
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: revealImage,
+                start: "top 85%", // Trigger slightly earlier
+                end: "bottom 80%",
+                toggleActions: "play none none reverse" // Play on enter, reverse on leave up
+            }
+        });
+
+        // 1. Reveal Image FASTER (duration 0.8s)
+        tl.fromTo(revealImage,
+            { clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)", scale: 1.15 }, 
+            {
+                clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                scale: 1,
+                duration: 0.9, 
+                ease: "power2.inOut",
+            }
+        );
+    }
 
 });

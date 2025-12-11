@@ -71,6 +71,32 @@ body {
     backface-visibility: hidden;
 }
 
+/* --- Portrait 3D Styling (About Me) --- */
+.portrait-scene {
+    perspective: 1200px;
+}
+
+.portrait-object {
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+/* Floating Icon Animation */
+@keyframes float-icon {
+    0%, 100% {
+        transform: translateZ(30px) translateY(0px);
+    }
+    50% {
+        transform: translateZ(30px) translateY(-10px);
+    }
+}
+
+.floating-icon-badge {
+    animation: float-icon 3s ease-in-out infinite;
+    will-change: transform;
+    transform-style: preserve-3d;
+}
+
 /* 3D Depth Utilities */
 .transform-style-3d { transform-style: preserve-3d; }
 .translate-z-10 { transform: translateZ(10px); }
@@ -93,24 +119,25 @@ body {
 
 /* Generic Left Scroll */
 .marquee-content {
-    animation: scroll-left 20s linear infinite;
+    animation: scroll-left 40s linear infinite; /* Slow default */
     animation-play-state: running !important;
 }
 
 /* For Gallery - Left and Right variants */
 .marquee-left {
-    animation: scroll-left 15s linear infinite;
+    animation: scroll-left 30s linear infinite;
     animation-play-state: running !important;
 }
 
 .marquee-right {
-    animation: scroll-right 15s linear infinite;
+    animation: scroll-right 30s linear infinite;
     animation-play-state: running !important;
 }
 
-.marquee-content:hover {
-    animation-play-state: running !important;
-}
+/* REMOVED PAUSE ON HOVER to meet requirement "mexendo sem parar" */
+/* .marquee-content:hover {
+    animation-play-state: paused !important; 
+} */
 
 @keyframes scroll-left {
     0% { transform: translateX(0); }
@@ -130,7 +157,6 @@ body {
     filter: grayscale(100%);
     border: 1px solid rgba(255,255,255,0.1);
     object-fit: cover;
-    transition: all 0.3s;
     user-select: none;
     pointer-events: none; 
 }
@@ -139,6 +165,40 @@ body {
         height: 16rem; 
     }
 }
+
+/* --- PILL TAGS for Farms Section --- */
+.pill-tag {
+    display: inline-flex;
+    align-items: center;
+    background-color: #1a1d24;
+    color: #e0e0e0;
+    padding: 0.5rem 1.2rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    font-family: 'Lato', sans-serif;
+}
+
+.pill-tag:hover {
+    background-color: #c5a059;
+    color: #0f1115;
+    border-color: #c5a059;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(197, 160, 89, 0.3);
+}
+
+.pill-tag i {
+    transition: color 0.3s;
+}
+
+.pill-tag:hover i {
+    color: #0f1115;
+}
+
 
 /* --- Map Interactivity --- */
 .map-point {
@@ -274,4 +334,15 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
     background: #c5a059;
+}
+
+/* Reveal Image Initial State (Handled mostly by GSAP but good for fallback) */
+.mask-reveal-image {
+    will-change: clip-path, transform;
+}
+
+/* Feature Markers (New) */
+.feature-marker {
+    z-index: 30;
+    pointer-events: none; /* Let clicks pass through to image if needed */
 }
