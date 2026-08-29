@@ -49,15 +49,15 @@
 
     <!-- Minimal Header -->
     <header class="fixed w-full z-50 top-0 left-0 py-6 transition-all duration-300" id="header">
-        <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
-            <!-- Left: Name -->
-            <div class="flex flex-col">
-                <span class="text-lg md:text-2xl font-serif font-bold text-white tracking-widest">RENATO MARION</span>
-                <span class="text-[10px] md:text-xs text-brand-gold uppercase tracking-[0.3em]">Selecionador de oócitos</span>
+        <div class="w-full relative flex items-center h-12">
+            <!-- Left/Center: Name -->
+            <div id="header-name" class="absolute left-6 md:left-12 flex flex-col items-start transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]">
+                <span class="text-lg md:text-2xl font-serif font-bold text-white tracking-widest whitespace-nowrap">RENATO MARION</span>
+                <span class="text-[10px] md:text-xs text-brand-gold uppercase tracking-[0.3em] whitespace-nowrap">Selecionador de oócitos</span>
             </div>
 
             <!-- Right: Contact CTA -->
-            <a href="https://wa.me/5514981764014" target="_blank" class="group flex items-center gap-3 px-5 py-2 border border-brand-gold/30 rounded-full hover:bg-brand-gold hover:border-brand-gold transition-all duration-300 backdrop-blur-sm">
+            <a href="https://wa.me/5514981764014" target="_blank" id="header-cta" class="absolute right-6 md:right-12 group flex items-center gap-3 px-5 py-2 border border-brand-gold/30 rounded-full hover:bg-brand-gold hover:border-brand-gold transition-all duration-500 ease-out backdrop-blur-sm">
                 <span class="text-xs font-bold tracking-widest text-brand-gold group-hover:text-brand-dark uppercase hidden sm:inline">Contato</span>
                 <i class="fa-brands fa-whatsapp text-brand-gold group-hover:text-brand-dark transition-colors text-lg"></i>
             </a>

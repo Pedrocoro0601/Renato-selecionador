@@ -231,15 +231,38 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 3. Scroll Animations ---
     gsap.registerPlugin(ScrollTrigger);
 
-    // Navbar Blur
+    // Navbar Blur and Mobile Center Animation
     const header = document.getElementById('header');
+    const headerName = document.getElementById('header-name');
+    const headerCta = document.getElementById('header-cta');
+    
     window.addEventListener('scroll', () => {
+        const isMobile = window.innerWidth < 768;
+
         if(window.scrollY > 50) {
             header.classList.add('bg-brand-dark/95', 'backdrop-blur-lg', 'shadow-xl', 'py-3');
             header.classList.remove('py-6');
+
+            if (isMobile && headerName && headerCta) {
+                // Smoothly center the name
+                headerName.classList.remove('left-6', 'items-start');
+                headerName.classList.add('left-[50%]', '-translate-x-[50%]', 'items-center');
+                
+                // Smoothly hide the CTA
+                headerCta.classList.add('opacity-0', 'scale-90', 'pointer-events-none');
+            }
         } else {
             header.classList.remove('bg-brand-dark/95', 'backdrop-blur-lg', 'shadow-xl', 'py-3');
             header.classList.add('py-6');
+
+            if (headerName && headerCta) {
+                // Return to original left-aligned position
+                headerName.classList.add('left-6', 'items-start');
+                headerName.classList.remove('left-[50%]', '-translate-x-[50%]', 'items-center');
+                
+                // Bring back CTA
+                headerCta.classList.remove('opacity-0', 'scale-90', 'pointer-events-none');
+            }
         }
     });
 
