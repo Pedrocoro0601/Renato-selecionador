@@ -160,28 +160,37 @@
         </div>
     </section>
 
-    <!-- Running Tape -->
-    <section class="bg-brand-gold text-brand-dark py-3 md:py-4 overflow-hidden border-y border-white/10 relative z-30 shadow-lg transform -skew-y-1">
-        <div class="marquee-wrapper w-full overflow-hidden">
-            <div class="marquee-content flex items-center gap-8 md:gap-12 whitespace-nowrap will-change-transform">
+    <!-- Realistic 3D Running Tape -->
+    <section class="relative z-30 transform -skew-y-2 my-10 drop-shadow-[0_20px_30px_rgba(0,0,0,0.8)]">
+        <!-- Physical Ribbon Background with 3D gradients -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#e8c983] via-[#c5a059] to-[#a6803c] border-y border-[#f3e5ab]/40 overflow-hidden shadow-[inset_0_4px_10px_rgba(255,255,255,0.5),inset_0_-4px_10px_rgba(0,0,0,0.4)]">
+            <!-- Subtle noise overlay to simulate material -->
+            <div class="absolute inset-0 opacity-5 mix-blend-overlay pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E');"></div>
+        </div>
+
+        <div class="marquee-wrapper w-full overflow-hidden relative py-3 md:py-4">
+            <!-- Cylindrical lighting overlay for 3D realism (lightened for readability) -->
+            <div class="absolute inset-0 bg-gradient-to-r from-black/15 via-transparent to-black/15 pointer-events-none z-10"></div>
+            
+            <div class="marquee-content flex items-center gap-8 md:gap-12 whitespace-nowrap text-[#0a0c10] font-bold">
                 <div class="flex items-center gap-8 md:gap-12 shrink-0">
-                    <span class="text-sm md:text-xl font-serif font-bold uppercase tracking-widest">21 Anos de experiência selecionando oócitos</span>
+                    <span class="text-sm md:text-xl font-serif font-extrabold uppercase tracking-wider md:tracking-[0.2em]">21 Anos de experiência selecionando oócitos</span>
                     <i class="fa-solid fa-dna text-xs opacity-50"></i>
-                    <span class="text-sm md:text-xl font-serif font-bold uppercase tracking-widest">21 Anos de experiência selecionando oócitos</span>
+                    <span class="text-sm md:text-xl font-serif font-extrabold uppercase tracking-wider md:tracking-[0.2em]">21 Anos de experiência selecionando oócitos</span>
                     <i class="fa-solid fa-dna text-xs opacity-50"></i>
-                    <span class="text-sm md:text-xl font-serif font-bold uppercase tracking-widest">21 Anos de experiência selecionando oócitos</span>
+                    <span class="text-sm md:text-xl font-serif font-extrabold uppercase tracking-wider md:tracking-[0.2em]">21 Anos de experiência selecionando oócitos</span>
                     <i class="fa-solid fa-dna text-xs opacity-50"></i>
-                    <span class="text-sm md:text-xl font-serif font-bold uppercase tracking-widest">21 Anos de experiência selecionando oócitos</span>
+                    <span class="text-sm md:text-xl font-serif font-extrabold uppercase tracking-wider md:tracking-[0.2em]">21 Anos de experiência selecionando oócitos</span>
                     <i class="fa-solid fa-dna text-xs opacity-50"></i>
                 </div>
                 <div class="flex items-center gap-8 md:gap-12 shrink-0">
-                    <span class="text-sm md:text-xl font-serif font-bold uppercase tracking-widest">21 Anos de experiência selecionando oócitos</span>
+                    <span class="text-sm md:text-xl font-serif font-extrabold uppercase tracking-wider md:tracking-[0.2em]">21 Anos de experiência selecionando oócitos</span>
                     <i class="fa-solid fa-dna text-xs opacity-50"></i>
-                    <span class="text-sm md:text-xl font-serif font-bold uppercase tracking-widest">21 Anos de experiência selecionando oócitos</span>
+                    <span class="text-sm md:text-xl font-serif font-extrabold uppercase tracking-wider md:tracking-[0.2em]">21 Anos de experiência selecionando oócitos</span>
                     <i class="fa-solid fa-dna text-xs opacity-50"></i>
-                    <span class="text-sm md:text-xl font-serif font-bold uppercase tracking-widest">21 Anos de experiência selecionando oócitos</span>
+                    <span class="text-sm md:text-xl font-serif font-extrabold uppercase tracking-wider md:tracking-[0.2em]">21 Anos de experiência selecionando oócitos</span>
                     <i class="fa-solid fa-dna text-xs opacity-50"></i>
-                    <span class="text-sm md:text-xl font-serif font-bold uppercase tracking-widest">21 Anos de experiência selecionando oócitos</span>
+                    <span class="text-sm md:text-xl font-serif font-extrabold uppercase tracking-wider md:tracking-[0.2em]">21 Anos de experiência selecionando oócitos</span>
                     <i class="fa-solid fa-dna text-xs opacity-50"></i>
                 </div>
             </div>
