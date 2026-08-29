@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Renato Marion</title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230f1115' stroke='%23c5a059' stroke-width='4'/%3E%3Ctext x='50' y='68' font-family='serif' font-weight='bold' font-size='45' fill='%23c5a059' text-anchor='middle'%3ERM%3C/text%3E%3C/svg%3E">
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,19 +75,16 @@
 
         <!-- 3D Card Container -->
         <div class="card-scene w-full max-w-[320px] sm:max-w-[400px] md:max-w-[540px] aspect-[1.75/1] relative z-20 cursor-pointer mx-auto card-entrance" id="business-card">
-            
-            <!-- Dynamic Soft Shadow/Glow behind card -->
-            <div class="card-shadow absolute inset-4 bg-brand-gold/20 blur-[30px] rounded-full opacity-0 transition-opacity duration-500"></div>
 
             <div class="card-object w-full h-full relative preserve-3d">
                 
                 <!-- Front Face (Black/Gold Premium) -->
-                <div class="card-face card-front absolute inset-0 bg-[#14171f] rounded-xl md:rounded-2xl overflow-hidden border border-white/10 flex flex-col justify-between p-6 md:p-10 backface-hidden shadow-2xl">
+                <div class="card-face card-front absolute inset-0 bg-gradient-to-br from-[#1c202a] to-[#0a0c10] rounded-xl md:rounded-2xl overflow-hidden border border-brand-gold/20 flex flex-col justify-between p-6 md:p-10 backface-hidden">
                     <!-- Subtle Noise Texture -->
-                    <div class="absolute inset-0 opacity-[0.02] pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+                    <div class="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
                     
                     <!-- Shine Effect -->
-                    <div class="shine absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 pointer-events-none mix-blend-overlay z-50"></div>
+                    <div class="shine absolute inset-0 opacity-0 pointer-events-none mix-blend-overlay z-50 transition-opacity duration-300"></div>
                     
                     <!-- Card Content (Depth Layers) -->
                     <div class="flex justify-between items-start relative z-10 transform-style-3d translate-z-20">
@@ -109,7 +109,10 @@
                 </div>
 
                 <!-- Back Face (Details) -->
-                <div class="card-face card-back absolute inset-0 bg-[#e6e6e6] rounded-xl md:rounded-2xl overflow-hidden flex flex-col p-6 md:p-10 backface-hidden shadow-inner border border-gray-300" style="transform: rotateY(180deg);">
+                <div class="card-face card-back absolute inset-0 bg-gradient-to-br from-[#f8f9fa] to-[#e2e4e8] rounded-xl md:rounded-2xl overflow-hidden flex flex-col p-6 md:p-10 backface-hidden border border-gray-400/30" style="transform: rotateY(180deg);">
+                     <!-- Shine Effect -->
+                     <div class="shine absolute inset-0 opacity-0 pointer-events-none mix-blend-overlay z-50 transition-opacity duration-300"></div>
+                     
                      <!-- Pattern -->
                      <div class="absolute inset-0 opacity-[0.05] bg-[url('https://www.transparenttextures.com/patterns/cartographer.png')]"></div>
                      

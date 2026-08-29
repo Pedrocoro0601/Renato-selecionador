@@ -3,88 +3,108 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 1. Enhanced 3D Card Logic (Business Card) ---
     const cardScene = document.getElementById('business-card');
     const cardObject = cardScene.querySelector('.card-object');
-    const shine = cardScene.querySelector('.shine');
-    const shadow = cardScene.querySelector('.card-shadow');
+    const shines = cardScene.querySelectorAll('.shine');
     
     // Better detection: devices that primarily use a fine pointer (mouse)
     const canHover = window.matchMedia('(hover: hover)').matches;
 
     // --- PC (Mouse) Logic ---
     if (canHover) {
-        const maxTilt = 15; 
+        const maxTilt = 22; // More pronounced tilt for dramatic 3D effect
+        let currentX = 0;
+        let currentY = 0;
+        let targetX = 0;
+        let targetY = 0;
+        let animationFrameId = null;
+        let isHovering = false;
+        
+        const lerp = (start, end, factor) => start + (end - start) * factor;
 
-        const handleMove = (x, y, rect) => {
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
+        const updateCard = () => {
+            // Stop animation loop if returned to center and not hovering
+            if (!isHovering && Math.abs(targetX - currentX) < 0.001 && Math.abs(targetY - currentY) < 0.001) {
+                cardObject.classList.remove('is-interacting');
+                cardObject.style.transform = '';
+                shines.forEach(shine => shine.style.opacity = 0);
+                animationFrameId = null;
+                return;
+            }
+
+            // Smooth interpolation
+            currentX = lerp(currentX, targetX, 0.08); 
+            currentY = lerp(currentY, targetY, 0.08);
             
-            const rotateX = ((y - centerY) / centerY) * -1;
-            const rotateY = (x - centerX) / centerX;
+            const rotateX = currentY * maxTilt;
+            const rotateY = currentX * maxTilt;
 
             const isFlipped = cardObject.classList.contains('is-flipped');
             const baseRotateY = isFlipped ? 180 : 0;
             const tiltY = isFlipped ? -rotateY : rotateY; 
-
-            // Using inline styles for smooth tilt following mouse
-            cardObject.style.transform = `perspective(1000px) rotateX(${rotateX * maxTilt}deg) rotateY(${baseRotateY + (tiltY * maxTilt)}deg) scale3d(1.05, 1.05, 1.05)`;
             
-            const shineOpacity = Math.min(Math.abs(rotateX) + Math.abs(rotateY), 0.5);
-            const shineX = ((x / rect.width) * 100);
-            const shineY = ((y / rect.height) * 100);
+            // Apply transform
+            cardObject.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${baseRotateY + tiltY}deg) scale3d(1.05, 1.05, 1.05)`;
             
-            shine.style.background = `radial-gradient(circle at ${shineX}% ${shineY}%, rgba(255,255,255,0.15), transparent 50%)`;
-            shine.style.opacity = shineOpacity;
-
-            shadow.style.opacity = 0.6;
-            shadow.style.transform = `translate(${rotateY * -20}px, ${rotateX * 20}px) scale(1.05)`;
+            // Realistic Glare (Linear Sweep) calculation
+            // Map tilt (-1 to 1) to a background position (0% to 100%)
+            // The light moves opposite to the tilt to simulate environmental reflection
+            const bgPosX = 50 + (currentX * -150); 
+            const bgPosY = 50 + (currentY * -150);
+            const shineOpacity = isHovering ? 0.8 : Math.max(0, Math.abs(currentX)); // Fade out smoothly when leaving
+            
+            shines.forEach(shine => {
+                // Background image is set once below, here we only animate the position
+                shine.style.backgroundPosition = `${bgPosX}% ${bgPosY}%`;
+                shine.style.opacity = shineOpacity;
+            });
+            
+            animationFrameId = requestAnimationFrame(updateCard);
         };
 
+        // Initialize realistic glare pattern on shines
+        shines.forEach(shine => {
+            shine.style.backgroundImage = `linear-gradient(110deg, transparent 20%, rgba(255,255,255,0.05) 30%, rgba(255,255,255,0.4) 45%, rgba(255,255,255,0.05) 50%, transparent 60%, transparent 75%, rgba(255,255,255,0.15) 80%, transparent 85%)`;
+            shine.style.backgroundSize = '300% 300%';
+            shine.style.backgroundPosition = '50% 50%';
+        });
+
         cardScene.addEventListener('mousemove', (e) => {
-            // Only tilt if not mid-click on non-touch (rare edge case)
-            cardObject.classList.add('is-interacting');
             const rect = cardScene.getBoundingClientRect();
-            
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             
-            window.requestAnimationFrame(() => handleMove(x, y, rect));
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            targetX = (x - centerX) / centerX;
+            targetY = ((y - centerY) / centerY) * -1;
+            
+            if (!isHovering) {
+                isHovering = true;
+                cardObject.classList.add('is-interacting');
+                if (!animationFrameId) updateCard();
+            }
         });
 
         cardScene.addEventListener('mouseleave', () => {
-            cardObject.classList.remove('is-interacting'); 
-            const isFlipped = cardObject.classList.contains('is-flipped');
-            
-            // Return to base state
-            cardObject.style.transform = `perspective(1000px) rotateX(0deg) rotateY(${isFlipped ? 180 : 0}deg) scale3d(1, 1, 1)`;
-            shine.style.opacity = 0;
-            shadow.style.opacity = 0;
-            shadow.style.transform = `translate(0px, 0px) scale(1)`;
+            isHovering = false;
+            targetX = 0;
+            targetY = 0;
+            // The animation loop will naturally handle the return to center and cleanup
         });
     }
 
-    // --- Universal Click/Tap Logic (Fix for Mobile Freeze) ---
+    // --- Universal Click/Tap Logic ---
     cardScene.addEventListener('click', (e) => {
-        // Prevent if clicking a link/button inside
         if(e.target.closest('a')) return;
 
-        // CRITICAL FIX FOR MOBILE LAG:
-        // 1. Stop any "interacting" transition speed adjustments
-        cardObject.classList.remove('is-interacting'); 
-
-        // 2. Clear inline styles immediately. 
-        // On mobile, the "tilt" scripts might not run, but clearing this ensures 
-        // the CSS class rule is the *only* thing controlling the transform.
-        // This stops the JS coordinates from fighting the CSS class.
+        // Reset inline styles to allow CSS transition to handle the flip smoothly
         cardObject.style.transform = ''; 
+        cardObject.classList.remove('is-interacting'); 
         
-        // 3. Reset effects
-        shine.style.opacity = '0';
-        shadow.style.opacity = '0';
-        shadow.style.transform = '';
+        shines.forEach(shine => shine.style.opacity = '0');
 
-        // 4. Force a reflow (optional, usually not needed if simply toggling class, but helps reset browser paint)
-        void cardObject.offsetWidth; 
+        void cardObject.offsetWidth; // Force reflow
 
-        // 5. Toggle class
         cardObject.classList.toggle('is-flipped');
     });
 
