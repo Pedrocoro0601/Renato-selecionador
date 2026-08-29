@@ -16,6 +16,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- Leaflet CSS for Interactive Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -293,45 +296,14 @@
 
             <!-- Map Container -->
             <div class="relative w-full max-w-5xl mx-auto reveal-up">
-                <div class="relative w-full aspect-[1.8/1] bg-[#161920] rounded-xl md:rounded-2xl border border-white/5 shadow-2xl overflow-hidden group">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg" 
-                         alt="Mapa Mundi" 
-                         class="w-full h-full object-cover opacity-20 filter invert grayscale contrast-125 mix-blend-screen hover:opacity-30 transition-opacity duration-700 pointer-events-none">
-                    
-                    <div class="absolute inset-0 bg-gradient-to-b from-[#0d0f12]/50 via-transparent to-[#0d0f12]/50 pointer-events-none"></div>
-
-                    <!-- Hotspots -->
-                    <div class="map-point" style="top: 65%; left: 32%;" data-country="Brasil">
-                        <div class="point-dot bg-brand-gold"></div>
-                        <div class="point-pulse bg-brand-gold"></div>
-                    </div>
-                    <div class="map-point" style="top: 63%; left: 29%;" data-country="Bolívia">
-                        <div class="point-dot bg-brand-gold"></div>
-                        <div class="point-pulse bg-brand-gold"></div>
-                    </div>
-                    <!-- Paraguai with tooltip-bottom class -->
-                    <div class="map-point tooltip-bottom" style="top: 68%; left: 30.5%;" data-country="Paraguai">
-                        <div class="point-dot bg-brand-gold"></div>
-                        <div class="point-pulse bg-brand-gold"></div>
-                    </div>
-                    <div class="map-point" style="top: 58%; left: 27%;" data-country="Equador">
-                        <div class="point-dot bg-brand-gold"></div>
-                        <div class="point-pulse bg-brand-gold"></div>
-                    </div>
-                    <div class="map-point" style="top: 50%; left: 24%;" data-country="Honduras">
-                        <div class="point-dot bg-brand-gold"></div>
-                        <div class="point-pulse bg-brand-gold"></div>
-                    </div>
-                    <!-- New Nicarágua point -->
-                    <div class="map-point" style="top: 52%; left: 24.5%;" data-country="Nicarágua">
-                        <div class="point-dot bg-brand-gold"></div>
-                        <div class="point-pulse bg-brand-gold"></div>
-                    </div>
-                    <div class="map-point" style="top: 40%; left: 78%;" data-country="China">
-                        <div class="point-dot bg-brand-gold"></div>
-                        <div class="point-pulse bg-brand-gold"></div>
-                    </div>
+                <!-- Interactive Leaflet Map Container -->
+                <div id="interactive-map" class="w-full h-[50vh] min-h-[400px] md:h-auto md:aspect-[2.2/1] bg-[#161920] rounded-xl md:rounded-2xl border border-white/5 shadow-2xl overflow-hidden z-10">
                 </div>
+                
+                <!-- Fade overlays for immersive edge blending -->
+                <div class="absolute inset-0 border-2 border-brand-gold/10 rounded-xl md:rounded-2xl pointer-events-none z-20"></div>
+                <div class="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-[#0d0f12] to-transparent pointer-events-none z-20"></div>
+                <div class="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-[#0d0f12] to-transparent pointer-events-none z-20"></div>
             </div>
         </div>
     </section>
@@ -354,6 +326,8 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="script.js"></script>
 </body>
 </html>

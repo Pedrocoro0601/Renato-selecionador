@@ -108,40 +108,123 @@ document.addEventListener('DOMContentLoaded', () => {
         cardObject.classList.toggle('is-flipped');
     });
 
-    // --- 2. Automated Map Tooltips ---
-    // Select all map points including the new Brazil ones
-    const mapPoints = document.querySelectorAll('.map-point');
-    
-    if (mapPoints.length > 0) {
-        let activePointIndex = -1;
-        
-        const cycleMapPoints = () => {
-            if (activePointIndex >= 0 && mapPoints[activePointIndex]) {
-                mapPoints[activePointIndex].classList.remove('is-active');
-            }
+    // --- 2. Interactive Immersive Map (Leaflet) ---
+    const mapContainer = document.getElementById('interactive-map');
+    if (mapContainer && typeof L !== 'undefined') {
+        // Initialize map locked in place (immersive, no dragging/zooming needed)
+        const map = L.map('interactive-map', {
+            zoomControl: false, 
+            scrollWheelZoom: false, 
+            dragging: false, // Disable dragging
+            doubleClickZoom: false,
+            touchZoom: false,
+            boxZoom: false,
+            keyboard: false,
+            attributionControl: false // Removes the Leaflet watermark text
+        });
 
-            // Just check valid points exist
-            if(mapPoints.length === 0) return;
+        // Add Esri Dark Gray Base Map for an ultra-clean, watermark-free premium feel
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}').addTo(map);
 
-            // Simple randomization logic
-            let nextIndex;
-            // Limit tries to avoid infinite loop if length is small
-            let tries = 0;
-            do {
-                nextIndex = Math.floor(Math.random() * mapPoints.length);
-                tries++;
-            } while (nextIndex === activePointIndex && mapPoints.length > 1 && tries < 10);
+        // Data for regions
+        const locations = [
+            { name: 'Brasil', coords: [-14.2350, -51.9253] },
+            { name: 'Bolívia', coords: [-16.2902, -63.5887] },
+            { name: 'Paraguai', coords: [-23.4425, -58.4438] },
+            { name: 'Equador', coords: [-1.8312, -78.1834] },
+            { name: 'Honduras', coords: [15.2000, -86.2419] },
+            { name: 'Nicarágua', coords: [12.8654, -85.2072] },
+            { name: 'China', coords: [35.8617, 104.1954] }
+        ];
 
-            activePointIndex = nextIndex;
+        // Custom Gold Marker Icon
+        const goldIcon = L.divIcon({
+            className: 'custom-map-marker',
+            html: `
+                <div class="marker-dot bg-brand-gold"></div>
+                <div class="marker-pulse bg-brand-gold"></div>
+            `,
+            iconSize: [32, 32],
+            iconAnchor: [16, 16]
+        });
+
+        const markers = [];
+
+        locations.forEach(loc => {
+            const marker = L.marker(loc.coords, { icon: goldIcon }).addTo(map);
             
-            // Safety check
-            if(mapPoints[activePointIndex]) {
-                mapPoints[activePointIndex].classList.add('is-active');
-            }
-        };
+            marker.bindPopup(`
+                <div class="map-popup-content">
+                    <span class="popup-country">${loc.name}</span>
+                </div>
+            `, {
+                closeButton: false,
+                className: 'custom-gold-popup',
+                offset: [0, -10],
+                autoPan: false
+            });
 
-        setInterval(cycleMapPoints, 2000); // 2 seconds per blip
-        cycleMapPoints(); 
+            marker.on('mouseover', function () {
+                this.openPopup();
+                this.getElement().classList.add('is-active-marker');
+            });
+            marker.on('mouseout', function () {
+                this.closePopup();
+                this.getElement().classList.remove('is-active-marker');
+            });
+
+            markers.push(marker);
+        });
+
+        // Automatically zoom and center to fit all markers perfectly
+        const bounds = L.featureGroup(markers).getBounds();
+        
+        const fitMapToScreen = () => {
+            const isMobile = window.innerWidth < 768;
+            // Less padding on mobile so markers are as large as possible
+            map.fitBounds(bounds, { padding: [isMobile ? 15 : 60, isMobile ? 15 : 60] });
+        };
+        
+        fitMapToScreen();
+        
+        // Recalculate if screen size changes (like rotating phone)
+        window.addEventListener('resize', () => {
+            map.invalidateSize();
+            fitMapToScreen();
+        });
+
+        // Cycle through popups automatically to keep the map "alive"
+        if (markers.length > 0) {
+            let activeMarkerIndex = -1;
+            
+            const cycleMarkers = () => {
+                if (activeMarkerIndex >= 0) {
+                    markers[activeMarkerIndex].closePopup();
+                    if(markers[activeMarkerIndex].getElement()) {
+                        markers[activeMarkerIndex].getElement().classList.remove('is-active-marker');
+                    }
+                }
+                
+                // Randomize next marker
+                let nextIndex;
+                let tries = 0;
+                do {
+                    nextIndex = Math.floor(Math.random() * markers.length);
+                    tries++;
+                } while (nextIndex === activeMarkerIndex && markers.length > 1 && tries < 10);
+
+                activeMarkerIndex = nextIndex;
+                
+                markers[activeMarkerIndex].openPopup();
+                if(markers[activeMarkerIndex].getElement()) {
+                    markers[activeMarkerIndex].getElement().classList.add('is-active-marker');
+                }
+            };
+
+            setInterval(cycleMarkers, 3000); 
+            // Delay first cycle slightly to let map load
+            setTimeout(cycleMarkers, 1000);
+        }
     }
 
 
